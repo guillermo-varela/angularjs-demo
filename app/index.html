@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html ng-app="weatherApp">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Weather Web App with AngularJS, Gulp and Bower">
+  <link rel="icon" href="assets/img/favicon.ico">
+
+  <title ng-bind="pageTitle"></title>
+
+  <!-- build:css css/vendor.min.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:css css/styles.min.css -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="/app.css">
+  <link rel="stylesheet" href="/about/about.css">
+  <!-- endinject -->
+  <!-- endbuild -->
+
+  <!-- build:js js/vendor.min.js -->
+  <!-- bower:js -->
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="/bower_components/angular/angular.js"></script>
+  <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:js js/scripts.min.js -->
+  <!-- inject:js -->
+  <script src="/blocks/router/router.module.js"></script>
+  <script src="/blocks/router/router-helper-provider.js"></script>
+  <script src="/home/home.module.js"></script>
+  <script src="/home/home.route.js"></script>
+  <script src="/core/core.module.js"></script>
+  <script src="/about/about.module.js"></script>
+  <script src="/about/about.route.js"></script>
+  <script src="/app.module.js"></script>
+  <script src="/app.config.js"></script>
+  <!-- endinject -->
+  <!-- endbuild -->
+</head>
+
+<body>
+  <!-- Navigation Bar -->
+  <div ng-include="'layout/menu.html'"></div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div ui-view></div>
+  </div>
+
+  <!-- Footer -->
+  <div ng-include="'layout/footer.html'"></div>
+</body>
+
+</html>
