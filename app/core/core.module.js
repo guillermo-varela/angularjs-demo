@@ -11,6 +11,7 @@
    */
   angular.module('weatherApp.core', [
     /* Cross-app modules */
-    'weatherApp.blocks.router'
+    'weatherApp.blocks.router',
+    'weatherApp.widgets'
   ]);
 })();

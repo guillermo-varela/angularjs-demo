@@ -17,9 +17,20 @@
         config: {
           url: '/home',
           templateUrl: 'home/home.html',
+          controller: 'HomeController',
+          controllerAs: 'vm',
           data: {
             pageTitle: 'Home'
           }
+        }
+      },
+      {
+        state: 'city',
+        config: {
+          url: '/home/city/:cityId',
+          templateUrl: 'home/city/city.html',
+          controller: 'CityController',
+          controllerAs: 'vm'
         }
       }
     ];

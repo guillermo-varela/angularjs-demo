@@ -1,0 +1,14 @@
+<wa-section-header wa-title="vm.cityWeather.name"
+                   wa-subtitle="vm.cityWeather.country">
+</wa-section-header>
+
+<div id="currentWeather" ng-show="vm.cityWeather.image">
+  <img id="weatherImage" ng-src="{{vm.cityWeather.image}}" />
+  <br/>
+  <strong>Weather</strong>: {{vm.cityWeather.description}}
+  <br/>
+  <strong>Temperature</strong>: {{vm.cityWeather.temperature}} &deg;C
+</div>
+
+<br/>
+Weather data from: <a href="http://openweathermap.org" target="_blank">OpenWeatherMap</a>
