@@ -13,7 +13,7 @@
    * Service with the weather operations.
    */
   /* @ngInject */
-  function WeatherService($window, $q, $http) {
+  function WeatherService($q, $http) {
     var openWheaterAppId = 'abc123';
 
     var service = {
@@ -65,7 +65,6 @@
       }
 
       function checkCityError(error) {
-        $window.console.error(error);
         deferred.reject(error);
       }
 

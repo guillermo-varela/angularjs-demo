@@ -106,4 +106,24 @@ gulp.task('build', function (done) {
   runSequence('jshint', 'jscs', 'clean:dist', 'compress', 'copy:assets', done);
 });
 
+// Generates the documentation
+gulp.task('ngdocs', function () {
+  var options = {
+    title: "Weather Web App Documentation",
+    html5Mode: false
+  };
+  return gulp.src(paths.js, {cwd: paths.app})
+    .pipe(plugins.ngdocs.process(options))
+    .pipe(gulp.dest('./docs'));
+});
+
+// Starts a server with the docs
+gulp.task('server-docs', ['ngdocs'], function () {
+  plugins.connect.server({
+    root: './docs',
+    hostname: '0.0.0.0',
+    port: 8081
+  });
+});
+
 gulp.task('default', ['inject', 'wiredep', 'server', 'watch']);
