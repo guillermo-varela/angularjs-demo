@@ -33,11 +33,47 @@ gulp.task('wiredep', ['inject'], function () {
 gulp.task('compress', ['wiredep'], function () {
   return gulp.src('index.html', {cwd: paths.app})
     .pipe(plugins.useref({ searchPath: ['./', paths.app] }))
+    .pipe(plugins.if('*/scripts.min.js', plugins.replaceTask({
+      patterns: [
+        {
+          match: 'debugInfoEnabled',
+          replacement: 'false'
+        },
+        {
+          match: 'debugLogEnabled',
+          replacement: 'false'
+        }
+      ]
+    })))
+    .pipe(plugins.if('**/*.js', plugins.ngAnnotate()))
     .pipe(plugins.if('**/*.js', plugins.uglify({
       mangle: true
     }).on('error', plugins.util.log)))
     .pipe(plugins.if('**/*.css', plugins.cssnano()))
     .pipe(gulp.dest(paths.dist));
+});
+
+gulp.task('templates:build', function () {
+  return gulp.src(paths.views, {cwd: paths.app})
+    .pipe(plugins.htmlmin({collapseWhitespace: true}))
+    .pipe(plugins.angularTemplatecache({
+      module: 'weatherApp',
+      moduleSystem: 'IIFE'
+    }))
+    .pipe(plugins.uglify({
+      mangle: true
+    }))
+    .pipe(gulp.dest(paths.dist));
+});
+
+gulp.task('templates:concat', ['templates:build'], function () {
+  return gulp.src([paths.jsMin, paths.templatesCache], {cwd: paths.dist})
+    .pipe(plugins.concat(paths.jsMin))
+    .pipe(gulp.dest(paths.dist));
+});
+
+gulp.task('templates:clean', ['templates:concat'], function () {
+  return del(paths.dist + paths.templatesCache);
 });
 
 // Copies the assets into the dist folder
@@ -103,7 +139,7 @@ gulp.task('server-dist', ['build'], function () {
 
 // Production build
 gulp.task('build', function (done) {
-  runSequence('jshint', 'jscs', 'clean:dist', 'compress', 'copy:assets', done);
+  runSequence('jshint', 'jscs', 'clean:dist', 'compress', 'templates:clean', 'copy:assets', done);
 });
 
 // Generates the documentation

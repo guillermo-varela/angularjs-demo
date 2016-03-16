@@ -11,3 +11,4 @@ A more detailed tutorial can be found (in spanish) at:
 - http://nombre-temp.blogspot.com/2016/02/recomendaciones-angularjs-1x-parte-i.html
 - http://nombre-temp.blogspot.com/2016/03/recomendaciones-angularjs-1x-parte-ii.html
 - http://nombre-temp.blogspot.com/2016/03/recomendaciones-angularjs-1x-parte-iii.html
+- http://nombre-temp.blogspot.com/2016/03/recomendaciones-angularjs-1x-parte-iv.html
