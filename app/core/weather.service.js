@@ -30,7 +30,7 @@
      * @methodOf weatherApp.core.service:WeatherService
      *
      * @description
-     * Authenticates an user in Google+.
+     * Checks the weather on a given city.
      *
      * @param {number} cityId - Id of the city to check.
      * @returns {Promise} Promise that will be resolved with the current weather in the checked city.
