@@ -7,11 +7,12 @@ var wiredep     = require('wiredep').stream;
 var del         = require('del');
 var st          = require('st');
 var runSequence = require('run-sequence');
+var KarmaServer = require('karma').Server;
 
 // Search for js and css files created for injection in index.html
 gulp.task('inject', function () {
   return gulp.src('./index.html', {cwd: paths.app})
-    .pipe(plugins.inject(gulp.src(paths.js, {cwd: paths.app})
+    .pipe(plugins.inject(gulp.src(paths.jsApp, {cwd: paths.app})
       .pipe(plugins.angularFilesort())))
     .pipe(plugins.inject(gulp.src(paths.css, {
       read: false,
@@ -27,6 +28,26 @@ gulp.task('wiredep', ['inject'], function () {
       'ignorePath': '..'
     }))
     .pipe(gulp.dest(paths.app));
+});
+
+// Inject libraries via Bower in between of blocks "bower:xx" in karma.conf.js
+gulp.task('wiredep-karma', function () {
+  return gulp.src('./karma.conf.js')
+    .pipe(wiredep({devDependencies: true}))
+    .pipe(gulp.dest('./'));
+});
+
+// Run test once and exit
+gulp.task('test', ['wiredep-karma'], function (done) {
+  new KarmaServer({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
+});
+
+// Watch for file changes and re-run tests on each change
+gulp.task('tdd', ['wiredep-karma'], function (done) {
+  new KarmaServer({configFile: __dirname + '/karma.conf.js'}, done).start();
 });
 
 // Compress into a single file the ones in between of blocks "build:xx" in index.html
@@ -148,7 +169,7 @@ gulp.task('ngdocs', function () {
     title: "Weather Web App Documentation",
     html5Mode: false
   };
-  return gulp.src(paths.js, {cwd: paths.app})
+  return gulp.src(paths.jsApp, {cwd: paths.app})
     .pipe(plugins.ngdocs.process(options))
     .pipe(gulp.dest('./docs'));
 });
@@ -162,4 +183,4 @@ gulp.task('server-docs', ['ngdocs'], function () {
   });
 });
 
-gulp.task('default', ['inject', 'wiredep', 'server', 'watch']);
+gulp.task('default', ['inject', 'wiredep', 'server', 'watch', 'tdd']);
