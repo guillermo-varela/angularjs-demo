@@ -85,7 +85,7 @@
        */
       function updateDocTitle() {
         $rootScope.$on('$stateChangeStart',
-          function(event, current, previous) {
+          function(event, current) {
             var title = 'Weather Web App';
             if (current.data && current.data.pageTitle) {
               title = current.data.pageTitle + ' - ' + title;
