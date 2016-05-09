@@ -12,12 +12,14 @@ var KarmaServer = require('karma').Server;
 // Search for js and css files created for injection in index.html
 gulp.task('inject', function () {
   return gulp.src('./index.html', {cwd: paths.app})
-    .pipe(plugins.inject(gulp.src(paths.jsApp, {cwd: paths.app})
-      .pipe(plugins.angularFilesort())))
-    .pipe(plugins.inject(gulp.src(paths.css, {
-      read: false,
-      cwd: paths.app
-    })))
+    .pipe(plugins.inject(
+      gulp.src(paths.jsApp, {cwd: paths.app}).pipe(plugins.angularFilesort()), {
+        relative: true
+    }))
+    .pipe(plugins.inject(
+      gulp.src(paths.css, {cwd: paths.app, read: false}), {
+        relative: true
+    }))
     .pipe(gulp.dest(paths.app));
 });
 
@@ -107,14 +109,16 @@ gulp.task('copy:assets', function () {
 gulp.task('jshint', function() {
   return gulp.src(paths.js, {cwd: paths.app})
     .pipe(plugins.jshint())
-    .pipe(plugins.jshint.reporter('jshint-stylish'));
+    .pipe(plugins.jshint.reporter('jshint-stylish'))
+    .pipe(plugins.jshint.reporter('fail'));
 });
 
 // Looks for code style errors in JS and prints them
 gulp.task('jscs', function () {
   return gulp.src(paths.js, {cwd: paths.app})
     .pipe(plugins.jscs())
-    .pipe(plugins.jscs.reporter());
+    .pipe(plugins.jscs.reporter())
+    .pipe(plugins.jscs.reporter('fail'));
 });
 
 // Cleans the dist folder
@@ -127,8 +131,10 @@ gulp.task('watch', function() {
   gulp.watch(paths.css, {cwd: paths.app}, ['inject']);
   gulp.watch(paths.js, {cwd: paths.app}, ['jshint', 'jscs', 'inject']);
   gulp.watch(['./bower.json'], ['wiredep']);
-  plugins.watch('**/*.html', {cwd: paths.app})
-    .pipe(plugins.connect.reload());
+  gulp.watch('**/*.html', {cwd: paths.app}, function(event) {
+    gulp.src(event.path)
+      .pipe(plugins.connect.reload());
+  });
 });
 
 // Starts a development web server

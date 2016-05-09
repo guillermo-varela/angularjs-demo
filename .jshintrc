@@ -13,8 +13,11 @@
   "undef": true,
   "unused": true,
   "strict": true,
+  "jasmine": true,
   "globals": {
     "angular": false,
-    "google": false
+    "google": false,
+    "sinon": false,
+    "inject": false
   }
 }
